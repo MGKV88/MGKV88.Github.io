@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Buttons Page</title>
+    <title>Meowgical Mischief </title>
     <style>
         html, body {
             height: 100%;
@@ -127,7 +127,7 @@
             y = Math.random() * (canvas.height - 2 * r) + r;
             tries++;
         } while (isOverlapping(x, y, r) && tries < 1000);
-        if (tries < 100) {
+        if (tries < 1000) {
             spots.push({ x, y, r });
            ctx.beginPath();
             ctx.arc(x, y, r, 0, 2 * Math.PI);
