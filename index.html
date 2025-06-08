@@ -72,7 +72,7 @@
 <body>
     <canvas id="bg-canvas"></canvas>
     <div class="content">
-        <img id="main-img" src="Media/LOGO_AND_BRAND_IDENTITY-02.png" alt="Logo">
+        <img id="main-img" src="Media/LOGO_AND_BRAND_IDENTITY-08.png" alt="Logo">
         <div class="button-group">
             <button>Button One</button>
             <button>Button Two</button>
@@ -81,43 +81,62 @@
     </div>
     <script>
         function drawSpots() {
-            const canvas = document.getElementById('bg-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-            // Get image position and size
-            const img = document.getElementById('main-img');
-            const rect = img.getBoundingClientRect();
+    // Get image position and size
+    const img = document.getElementById('main-img');
+    const rect = img.getBoundingClientRect();
 
-            // Spots settings
-            const spotColor = '#b5b3d9';
-            const minRadius = 20;
-            const maxRadius = 60;
-            const spotCount = 25;
+    // Spots settings
+    const spotColor = '#b5b3d9';
+    const minRadius = 5;
+    const maxRadius = 20;
+    const spotCount = 70;
+    const spots = [];
 
-            for (let i = 0; i < spotCount; i++) {
-                let tries = 0;
-                let x, y, r;
-                do {
-                    r = Math.random() * (maxRadius - minRadius) + minRadius;
-                    x = Math.random() * (canvas.width - 2 * r) + r;
-                    y = Math.random() * (canvas.height - 2 * r) + r;
-                    tries++;
-                    // Check if the spot overlaps the image area
-                } while (
-                    x + r > rect.left && x - r < rect.right &&
-                    y + r > rect.top && y - r < rect.bottom &&
-                    tries < 100
-                );
-                ctx.beginPath();
-                ctx.arc(x, y, r, 0, 2 * Math.PI);
-                ctx.fillStyle = spotColor;
-                ctx.globalAlpha = 0.8;
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
+    function isOverlapping(x, y, r) {
+        // Check overlap with image
+        if (
+            x + r + 4 > rect.left && x - r + 4 < rect.right &&
+            y + r + 4 > rect.top && y - r + 4 < rect.bottom
+        ) {
+            return true;
+        }
+        // Check overlap with other spots
+        for (const spot of spots) {
+            const dx = x - spot.x;
+            const dy = y - spot.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < r + spot.r) {
+                return true;
             }
         }
+        return false;
+    }
+
+    for (let i = 0; i < spotCount; i++) {
+        let tries = 0;
+        let x, y, r;
+        do {
+            r = Math.random() * (maxRadius - minRadius) + minRadius;
+            x = Math.random() * (canvas.width - 2 * r) + r;
+            y = Math.random() * (canvas.height - 2 * r) + r;
+            tries++;
+        } while (isOverlapping(x, y, r) && tries < 100);
+        if (tries < 100) {
+            spots.push({ x, y, r });
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fillStyle = spotColor;
+            ctx.globalAlpha = 0.8;
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        }
+    }
+}
 
         // Draw spots after image loads and on resize
         window.addEventListener('load', drawSpots);
