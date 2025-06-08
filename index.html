@@ -13,7 +13,7 @@
         body {
             min-height: 100vh;
             margin: 0;
-            background: #7b80BD;
+            background: #b5b3d9;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -91,9 +91,10 @@
     const rect = img.getBoundingClientRect();
 
     // Spots settings
-    const spotColor = '#b5b3d9';
+    const spotColor = 'rgba(255,255,255,0.35)';
     const minRadius = 5;
     const maxRadius = 20;
+    const radiusOptions = [5, 10, 15];
     const spotCount = 70;
     const spots = [];
 
@@ -110,7 +111,7 @@
             const dx = x - spot.x;
             const dy = y - spot.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r + spot.r) {
+            if (distance < r + spot.r + 4) {
                 return true;
             }
         }
@@ -121,19 +122,18 @@
         let tries = 0;
         let x, y, r;
         do {
-            r = Math.random() * (maxRadius - minRadius) + minRadius;
+            r = radiusOptions[Math.floor(Math.random() * radiusOptions.length)];
             x = Math.random() * (canvas.width - 2 * r) + r;
             y = Math.random() * (canvas.height - 2 * r) + r;
             tries++;
-        } while (isOverlapping(x, y, r) && tries < 100);
+        } while (isOverlapping(x, y, r) && tries < 1000);
         if (tries < 100) {
             spots.push({ x, y, r });
-            ctx.beginPath();
+           ctx.beginPath();
             ctx.arc(x, y, r, 0, 2 * Math.PI);
             ctx.fillStyle = spotColor;
-            ctx.globalAlpha = 0.8;
+            ctx.globalAlpha = 1.0; // Opacity is now in the color
             ctx.fill();
-            ctx.globalAlpha = 1.0;
         }
     }
 }
