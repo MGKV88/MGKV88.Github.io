@@ -14,7 +14,8 @@
         body {
             min-height: 100vh;
             margin: 0;
-            background: #b5b3d9;
+            background: #7B80BD url('Media/BackgroundImage.png') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,7 +47,7 @@
             max-width: 350px;
         }
         button {
-            padding: 1rem;
+            padding: 0.5rem;
             font-size: 1.2rem;
             border: none;
             border-radius: 8px;
@@ -59,89 +60,29 @@
         button:active {
             background: #f07f26;
             color: #fff;
-        }
-        img {
-            width: 100%;
-            max-width: 294px;
-            height: auto;
-            max-height: 316px;
-            margin-bottom: 2rem;
-            display: block;
-        }
+        }       
     </style>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
     <div class="content">
-        <img id="main-img" src="Media/LOGO_AND_BRAND_IDENTITY-10.png" alt="Logo">
+        <img id="main-img" src="Media/LOGO_AND_BRAND_IDENTITY-10.png" alt="Logo" style="width: 100%; max-width: 294px; height: auto; max-height: 316px; margin-bottom: 2rem; display: block;">
         <div class="button-group">
-            <button>Button One</button>
-            <button>Button Two</button>
-            <button>Button Three</button>
+            <button onclick="window.location.href='https://www.instagram.com/meowinx/'" style="display: flex; align-items: center; gap: 0.5em; justify-content: center;">
+                <img src="Media/InstaLogo.png" alt="Instagram Icon" style="width: 48px; height: 48px;">
+                <span style="font-size: 1.2em;">Meowinx on Instagram</span>
+            </button>
+            <button onclick="window.location.href='Glimmers.html'" style="display: flex; align-items: center; gap: 0.5em; justify-content: center;">
+                <img src="Media/star_1.png" alt="Instagram Icon" style="width: 48px; height: 48px;">
+                <span style="font-size: 1.2em;">More on Glimmers</span>
+            </button>
+            <button style="display: flex; align-items: center; gap: 0.5em; justify-content: center;">
+                <img src="Media/Construc.png" alt="Instagram Icon" style="width: 48px; height: 48px;">
+                <span style="font-size: 1.2em;">Website Coming Soon</span>
+            </button>
         </div>
     </div>
-    <script>
-        function drawSpots() {
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Get image position and size
-    const img = document.getElementById('main-img');
-    const rect = img.getBoundingClientRect();
-
-    // Spots settings
-    const spotColor = 'rgba(255,255,255,0.35)';
-    const minRadius = 5;
-    const maxRadius = 20;
-    const radiusOptions = [5, 10, 15];
-    const spotCount = 70;
-    const spots = [];
-
-    function isOverlapping(x, y, r) {
-        // Check overlap with image
-        if (
-            x + r + 4 > rect.left && x - r + 4 < rect.right &&
-            y + r + 4 > rect.top && y - r + 4 < rect.bottom
-        ) {
-            return true;
-        }
-        // Check overlap with other spots
-        for (const spot of spots) {
-            const dx = x - spot.x;
-            const dy = y - spot.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r + spot.r + 4) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    for (let i = 0; i < spotCount; i++) {
-        let tries = 0;
-        let x, y, r;
-        do {
-            r = radiusOptions[Math.floor(Math.random() * radiusOptions.length)];
-            x = Math.random() * (canvas.width - 2 * r) + r;
-            y = Math.random() * (canvas.height - 2 * r) + r;
-            tries++;
-        } while (isOverlapping(x, y, r) && tries < 1000);
-        if (tries < 1000) {
-            spots.push({ x, y, r });
-           ctx.beginPath();
-            ctx.arc(x, y, r, 0, 2 * Math.PI);
-            ctx.fillStyle = spotColor;
-            ctx.globalAlpha = 1.0; // Opacity is now in the color
-            ctx.fill();
-        }
-    }
-}
-
-        // Draw spots after image loads and on resize
-        window.addEventListener('load', drawSpots);
-        window.addEventListener('resize', drawSpots);
+    <script>        
     </script>
 </body>
 </html>
